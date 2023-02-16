@@ -1,0 +1,12 @@
+dash==1.0.2
+gunicorn==19.9.0
+pandas==0.24.2
+dash-colorscales==0.0.4
+torch==1.13.1
+torchvision==0.14.1
+xmltodict==0.13.0
+numpy==1.24.2
+nibabel==5.0.1
+scikit-image==0.19.3
+grad-cam==1.4.6
+matplotlib==3.7.0
