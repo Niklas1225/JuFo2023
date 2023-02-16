@@ -1,7 +1,16 @@
-# JuFo2023
-Alzheimer-Erkennung durch Künstliche Intelligenz
+# <b>Alzheimer-Erkennung durch Künstliche Intelligenz</b> - JuFo2023
 
-<h4>Links zu den Reports:</h4>
+<h3>Kurzfassung</h3>
+<hr>
+<span><em>
+Alzheimer ist eine zunehmend auftretende neurodegenerative Erkrankung. In ihrem Verlauf nimmt die Fähigkeit des Gehirns Informationen zu speichern ab, die Sprachfähigkeit leidet. Durch eine frühe Erkennung kann das Fortschreiten der Erkrankung entscheidend verlangsamt werden, sodass für Betroffene und Angehörige eine bessere Situation geschaffen wird.<br>
+In meinem Projekt möchte ich mittels KI-basierter Ansätze die Diagnostik von Alzheimer in allen Stadien der Erkrankung verbessern. Hierzu verwendete ich MRT-Aufnahmen der Gehirne verschiedener Personen, mithilfe derer ich unterschiedliche Modelle trainierte und vergleichen konnte. Als KI-Architekturen wird ein CNN-Transformer verwendet, der mit unterschiedlich großen ResNets und EfficientNets verglichen wird. Der CNN-Transformer performt bei der Klassifizierung am besten, da er auf Lokalität und Globalität spezialisiert ist. <br>
+Durch Methoden der Erklärbarkeit kann zudem die Entscheidung des Modells interpretiert und nachvollzogen werden. </em></span>
+
+
+<br>
+<h3>Links zu den Reports:</h3>
+<hr>
 Report zu der Hyperparameter Optimierung des CNN-Transformer
 <br>
 
