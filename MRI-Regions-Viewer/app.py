@@ -328,7 +328,7 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
             img_with_contours, img_out_of_labeled, index, labels, heatmap = slice_img(stage, val, want_heatmap=True)
             img = heatmap
             fig = make_subplots(rows=1, cols=3, shared_yaxes=True)
-            opacity=1
+            opacity=.5
         else:
             img_with_contours, img_out_of_labeled, index, labels, _ = slice_img(stage, val)
             img = img_with_contours
@@ -385,10 +385,13 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
     # new option select
     if figure["data"][0]["name"] != val or z_axis != SAVED_Z:
         cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
-        figure["data"] = create_mesh_data(val, z_axis, img, img_out_of_labeled, opacity)
+        figure["data"] = create_mesh_data(val, z_axis, img, img_out_of_labeled, cs, opacity)
         figure["layout"] = plot_layout
         for mesh in range(len(figure["data"])):
-            figure["data"][mesh]["colorscale"] = cs
+            if figure["data"][mesh]["name"] == "img":
+                figure["data"][mesh]["colorscale"] = "jet"
+            else:
+                figure["data"][mesh]["colorscale"] = cs
 
         #SAVED_Z = max_z
         #MAX_SLIDER_VALUE = max_z
