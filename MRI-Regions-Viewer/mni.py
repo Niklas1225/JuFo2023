@@ -133,9 +133,10 @@ def create_plot_edges_lines(vertices, faces):
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
 
-def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6):
+def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6, add_heat=False):
     data = []
     names = None
+    percentage = None
     mesh = []
 
     if option == "human_mrt":
@@ -177,7 +178,7 @@ def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6
             else:
                 data = data[:, :, :z]
                 data = np.concatenate((data, np.zeros([data.shape[0], data.shape[1], rest])), axis=2)
-
+        
         #transform 
         vertices, faces, normals, intensities = measure.marching_cubes(data, 0,  method='lorensen', allow_degenerate=False)
 
@@ -207,9 +208,21 @@ def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6
             matrix1 = np.ndarray(data.shape)
             img_gray = rgb2gray(img)
             matrix1[:, :, z] = img_gray.T
-            matrix2 = np.ndarray(data.shape)
-            matrix2[:, :, z] = img_labeled.T
             vertices, faces, normals, intensities = measure.marching_cubes(matrix1, 0,  method='lorensen', allow_degenerate=False)
+
+            if add_heat:
+                percentage = []
+                img_norm = ((img_gray-np.min(img_gray)/(np.max(img_gray)-np.min(img_gray)))).T
+                this_map = np.around(np.rot90(nifti_file.get_fdata(), k=-1, axes=(1,2))[:, :, z], 0)
+                for count, i in enumerate(np.unique(this_map)):
+                    this = this_map.copy()
+                    this[this != i] = 0
+                    this[this == i] = 1
+                    this_dict = {"region": new_dict[str(int(i))], "attention": np.sum(this * img_norm)}
+                    percentage.append(this_dict)
+
+                percentage = sorted(percentage, key=lambda d: d["attention"], reverse=True)
+                
 
             matrix3 = np.ndarray(data.shape)
             matrix3[:, :, z] = img_labeled.T
@@ -229,6 +242,9 @@ def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6
             )
             mesh.extend(mesh_obj)
             mesh[1]["name"] = "img"
+
+            if add_heat:
+                return mesh, percentage
 
     elif option == "labeled_atlas":
         #load file
@@ -270,15 +286,29 @@ def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6
 
         #add image if needed
         if img is not None: 
-            matrix = np.ndarray(data.shape)
+            matrix1 = np.ndarray(data.shape)
             img_gray = rgb2gray(img)
-            matrix[:, :, z] = img_gray.T
-            vertices, faces, normals, intensities = measure.marching_cubes(matrix, 0,  method='lorensen', allow_degenerate=False)
+            matrix1[:, :, z] = img_gray.T
+            vertices, faces, normals, intensities = measure.marching_cubes(matrix1, 0,  method='lorensen', allow_degenerate=False)
+
+            '''matrix3 = np.ndarray(data.shape)
+            matrix3[:, :, z] = img_labeled.T
+            matrix3[matrix3 == 0] = 1
+            matrix4 = matrix1.copy()
+            matrix4[matrix4 > 0] = 1
+            matrix3 = matrix3 * matrix4
+            _, _, _, intensities_for_names = measure.marching_cubes(matrix3, 0,  method='lorensen', allow_degenerate=False)
+
+            img_names = []
+            for i in intensities_for_names:
+               img_names.append(value_list[int(i)])
+            img_names = np.array(img_names)
+            '''
             mesh_obj = plotly_triangular_mesh(
-                vertices, faces, intensities, colorscale=default_colorscale, names=names
+                vertices, faces, intensities, colorscale="inferno", names=names, opacity=opacity
             )
-            mesh_obj[0]["color"] = "purple"
             mesh.extend(mesh_obj)
+            mesh[1]["name"] = "img"
 
     elif option == "all_regions":
         #load file

@@ -172,9 +172,13 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
         image = cv2.imread(filename=str(DATA_PATH.joinpath("images/moderate.jpg")))
 
     #get image contours
-    img_contours, img_all_contours = get_contours(image)
+    img_contours, img_all_contours = get_contours(image.copy())
     #center image contours
     img_contours, img_all_contours, size_con = centerImage(img_contours, 254, 254, 254, 254, img_all_contours)
+    print()
+    print(image.shape)
+    img_non_contours = image.copy()[size_con[0]:size_con[1], size_con[2]:size_con[3]]
+    print(img_non_contours.shape)
     #img_all_contours = centerImage(img_all_contours, 254, 254, 2)
 
     #load mrt
@@ -185,7 +189,7 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
         regions = nib.load(DATA_PATH.joinpath("aal.nii.gz"))
         regions_data = regions.get_fdata()
         regions_data = np.rot90(regions_data, k=1, axes=(1,2))
-
+    #print(regions_data.shape)
     #print(regions_data.max())
     #print(regions_data.min())
 
@@ -241,11 +245,14 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
 
     img_contours = cv2.resize(img_contours, [just_contours[index].shape[1], just_contours[index].shape[0]])
     img_all_contours = cv2.resize(img_all_contours, [on_contours[index].shape[1], on_contours[index].shape[0]])
+    img_non_contours = cv2.resize(img_non_contours, [on_contours[index].shape[1], on_contours[index].shape[0]])
+    print(img_non_contours.shape)
     #img_all_contours = cv2.resize(img_all_contours, [regions_data.shape[0], regions_data.shape[2]])
 
     #colored_img = reverseCenterImage(on_contours[index], slice_values_list[index], regions_data[:, index, :].T.shape)[:, :, 0]
     img_all_contours = reverseCenterImage(img_all_contours, slice_values_list[index], regions_data[:, index, :].T.shape)
-
+    img_non_contours = reverseCenterImage(img_non_contours, slice_values_list[index], regions_data[:, index, :].T.shape)
+    print(img_non_contours.shape)
     if want_heatmap:
         heatmap = getHeatmap(selected_stage=selected_stage)
         heatmap = cv2.resize(heatmap, [image.shape[0], image.shape[1]])
@@ -298,4 +305,4 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     #print(img_all_contours.shape)
     #print(colored_img.shape)
 
-    return img_all_contours, colored_img, index, names, heatmap_out
+    return img_non_contours, img_all_contours, colored_img, index, names, heatmap_out

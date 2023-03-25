@@ -1,7 +1,7 @@
 import os
 import json
 import dash
-from dash import dcc
+from dash import dcc, dash_table
 from dash import html
 import dash_colorscales as dcs
 from dash.dependencies import Input, Output, State
@@ -9,9 +9,12 @@ from dash.exceptions import PreventUpdate
 from plotly.subplots import make_subplots
 from PIL import Image
 import numpy as np
+import pandas as pd
+import operator
 import plotly.express as px
 from mni import create_mesh_data, default_colorscale
 from ssimClass import slice_img
+import matplotlib.pyplot as plt
 
 
 app = dash.Dash(
@@ -57,6 +60,8 @@ imshow_layout = {
     "paper_bgcolor": 'rgba(0,0,0,0)',
     "plot_bgcolor": 'rgba(0,0,0,0)',
 }
+
+table_layout = {'color': 'white', 'backgroundColor': 'black'}
 
 button_style_dict = {
     "width": "300px",
@@ -144,7 +149,8 @@ app.layout = html.Div(
                                 {"label": "Human MRT", "value": "human_mrt"},
                                 {"label": "MRT Regions", "value": "mrt_regions"},
                                 {"label": "Labeled Atlas", "value": "labeled_atlas"},
-                                #{"label": "All Regions", "value": "all_regions"},
+                                {"label": "All Regions", "value": "all_regions"},
+                                #{"label": "All Regions", "value": "all_regions2"},
                             ],
                             #default
                             value="human_mrt",
@@ -193,6 +199,7 @@ app.layout = html.Div(
                     [
                         html.Div(id="output-alzheimers_image1"),
                         html.Div(id="output-alzheimers_image2"),
+                        html.Div(id="output-percentage-table"),
                     ],
                     className="pb-20",
                 ),
@@ -293,6 +300,7 @@ def marker_in_points(points, marker):
         Output("output-alzheimers_image2", "children"),
         Output('dd-output-container', 'children'),
         Output("output-alzheimers_image1", "children"),
+        Output("output-percentage-table", "children"),
     ],
     [
         #Input("brain-graph", "clickData"),
@@ -313,6 +321,7 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
     img_out_of_labeled = None
     opacity = .6
     show_img = None
+    percentage_table = None
 
     if val== "human_mrt":
         show_stage = "Please select the option MRT Regions or Labeled Atlas to view the Alzheimer's MRI-Slice."
@@ -320,22 +329,22 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
         show_stage = ""
     
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if (('do-slice-val' in changed_id) or ('add-heat-val' in changed_id)) and (val == "mrt_regions" ):#or val=="labeled_atlas"
+    if (('do-slice-val' in changed_id) or ('add-heat-val' in changed_id)) and (val == "mrt_regions"):#or val=="labeled_atlas"
 
         cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
 
         if 'add-heat-val' in changed_id:
-            img_with_contours, img_out_of_labeled, index, labels, heatmap = slice_img(stage, val, want_heatmap=True)
+            img_non_contours, img_with_contours, img_out_of_labeled, index, labels, heatmap = slice_img(stage, val, want_heatmap=True)
             img = heatmap
             fig = make_subplots(rows=1, cols=3, shared_yaxes=True)
-            opacity=.5
+            opacity=1
         else:
-            img_with_contours, img_out_of_labeled, index, labels, _ = slice_img(stage, val)
-            img = img_with_contours
+            img_non_contours, img_with_contours, img_out_of_labeled, index, labels, _ = slice_img(stage, val)
+            img = img_non_contours
             fig = make_subplots(rows=1, cols=2, shared_yaxes=True)
-            opacity=.5
+            opacity=1
 
-        fig_img = px.imshow(img_with_contours, color_continuous_scale="gray")
+        fig_img = px.imshow(img_non_contours, color_continuous_scale="gray")
         fig_img.data[0]["text"] = labels
         fig_img.data[0]["hovertemplate"] = 'x: %{x}<br>y: %{y}<br>color: %{z}<br>region: %{text}<extra></extra>'
         fig.add_trace(fig_img.data[0], row=1, col=1)
@@ -385,7 +394,13 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
     # new option select
     if figure["data"][0]["name"] != val or z_axis != SAVED_Z:
         cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
-        figure["data"] = create_mesh_data(val, z_axis, img, img_out_of_labeled, cs, opacity)
+        if 'add-heat-val' in changed_id:
+            figure["data"], percentage = create_mesh_data(val, z_axis, img, img_out_of_labeled, cs, opacity, True)
+            percentage_table = dash_table.DataTable(percentage[1:], [{"name": i, "id": i} for i in ["region", "attention"]], style_data=table_layout,style_header={'backgroundColor': 'gray', "color": "black",'fontWeight': 'bold'})
+
+        else:
+            figure["data"] = create_mesh_data(val, z_axis, img, img_out_of_labeled, cs, opacity, False)
+        
         figure["layout"] = plot_layout
         for mesh in range(len(figure["data"])):
             if figure["data"][mesh]["name"] == "img":
@@ -396,7 +411,7 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
         #SAVED_Z = max_z
         #MAX_SLIDER_VALUE = max_z
 
-        return figure, graph_fig, show_stage, show_img
+        return figure, graph_fig, show_stage, show_img, percentage_table
 
     # modify graph markers
     if click_data is not None and "points" in click_data:
@@ -445,7 +460,7 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
     cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
     figure["data"][0]["colorscale"] = cs
 
-    return figure, graph_fig, show_stage, show_img
+    return figure, graph_fig, show_stage, show_img, percentage_table
 
 
 @app.callback(Output("click-data", "children"), [Input("brain-graph", "clickData")])
