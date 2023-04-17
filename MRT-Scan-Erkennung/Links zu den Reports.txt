@@ -1,2 +1,0 @@
-Der Link zum Report über die Hyperparameter Optimierung von Weights and Biases
-https://wandb.ai/nbennewiz/CNN-T%20Hyperparameter%20Optimierung/reports/Auswertung-der-Hyperparameter-Optimierung--VmlldzozNDUyNDIw?accessToken=xd6rv2k9qk8mx805i3rfp7yo67xkc275bigv4kmmzksgec42o0mmqly55ra6pg7y
