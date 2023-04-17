@@ -38,7 +38,7 @@ python app.py
 [http://127.0.0.1:8050](http://127.0.0.1:8050 "") 
 
 <br>
-<h3>Screenshots</h3>
+<h3>Funktionen</h3>
 <hr>
 <br>
 <h4>Labeled MRT-Regions</h4>
