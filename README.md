@@ -16,7 +16,16 @@ Report zu der Hyperparameter Optimierung des CNN-Transformer
 <br>
 
 [Weights&Biases-Reports](https://api.wandb.ai/links/nbennewiz/j8svnd3w "")
-<br><br>
+<br>
+
+<br>
+<h3>Upgraded AutoClass</h3>
+<hr>
+
+
+<br>
+
+<br>
 <h3>Verwenden der App</h3>
 <hr>
 <br>
