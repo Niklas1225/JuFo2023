@@ -27,6 +27,9 @@ Report zu der Hyperparameter Optimierung des CNN-Transformer
 <h4>Upgraded AutoClass Clustering</h4>
 
 ![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_comparision.png)
+<h4>Upgraded Disease Clustering</h4>
+
+![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_DC_comparision.png)
 <br>
 
 <br>
