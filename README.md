@@ -2,6 +2,7 @@
 
 <h3>Kurzfassung</h3>
 <hr>
+
 <span><em>
 Alzheimer ist eine zunehmend auftretende neurodegenerative Erkrankung. In ihrem Verlauf nimmt die Fähigkeit des Gehirns Informationen zu speichern ab, die Sprachfähigkeit leidet. Durch eine frühe Erkennung kann das Fortschreiten der Erkrankung entscheidend verlangsamt werden, sodass für Betroffene und Angehörige eine bessere Situation geschaffen wird.<br>
 In meinem Projekt möchte ich mittels KI-basierter Ansätze die Diagnostik von Alzheimer in allen Stadien der Erkrankung verbessern. Hierzu verwendete ich MRT-Aufnahmen der Gehirne verschiedener Personen, mithilfe derer ich unterschiedliche Modelle trainierte und vergleichen konnte. Als KI-Architekturen wird ein CNN-Transformer verwendet, der mit unterschiedlich großen ResNets und EfficientNets verglichen wird. Der CNN-Transformer performt bei der Klassifizierung am besten, da er auf Lokalität und Globalität spezialisiert ist. <br>
@@ -15,7 +16,23 @@ Report zu der Hyperparameter Optimierung des CNN-Transformer
 <br>
 
 [Weights&Biases-Reports](https://api.wandb.ai/links/nbennewiz/j8svnd3w "")
-<br><br>
+<br>
+
+<br>
+<h3>Upgraded AutoClass</h3>
+<hr>
+<h4>Normal Clustering</h4>
+
+![NormalClustering](/Genexpressions-Beziehungen/assets/NormalClustering.png)
+<h4>Upgraded AutoClass Clustering</h4>
+
+![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_comparision.png)
+<h4>Upgraded Disease Clustering</h4>
+
+![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_DC_comparision.png)
+<br>
+
+<br>
 <h3>Verwenden der App</h3>
 <hr>
 <br>
@@ -37,7 +54,7 @@ python app.py
 [http://127.0.0.1:8050](http://127.0.0.1:8050 "") 
 
 <br>
-<h3>Screenshots</h3>
+<h3>Funktionen</h3>
 <hr>
 <br>
 <h4>Labeled MRT-Regions</h4>
