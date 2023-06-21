@@ -199,6 +199,7 @@ app.layout = html.Div(
                     [
                         html.Div(id="output-alzheimers_image1"),
                         html.Div(id="output-prediction"),
+                        html.Div(id="output-modelUncertainty"),
                         html.Div(id="output-alzheimers_image2"),
                         html.Div(id="output-percentage-table"),
                     ],
@@ -303,6 +304,7 @@ def marker_in_points(points, marker):
         Output("output-alzheimers_image1", "children"),
         Output("output-percentage-table", "children"),
         Output("output-prediction", "children"),
+        Output("output-modelUncertainty", "children"),
     ],
     [
         #Input("brain-graph", "clickData"),
@@ -325,6 +327,7 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
     show_img = None
     percentage_table = None
     prediction = None
+    uncertainty_table = None
 
     if val== "human_mrt":
         show_stage = "Please select the option MRT Regions or Labeled Atlas to view the Alzheimer's MRI-Slice."
@@ -337,13 +340,16 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
         cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
 
         if 'add-heat-val' in changed_id:
-            img_non_contours, img_with_contours, img_out_of_labeled, index, labels, heatmap, prediction = slice_img(stage, val, want_heatmap=True)
+            img_non_contours, img_with_contours, img_out_of_labeled, index, labels, heatmap, prediction, uncertainty = slice_img(stage, val, want_heatmap=True)
             img = heatmap
             fig = make_subplots(rows=1, cols=3, shared_yaxes=True)
             opacity=1
             prediction = html.Span("Predicted class: " + prediction)
+            uncertainty = [{"class": "Non-Demented", "uncertainty": uncertainty[0]}, {"class": "Very-Mild-Demented", "uncertainty": uncertainty[1]}, {"class": "Mild-Demented", "uncertainty": uncertainty[2]}, {"class": "Moderate-Demented", "uncertainty": uncertainty[3]}]
+            uncertainty_table = dash_table.DataTable(uncertainty, [{"name": i, "id": i} for i in ["class", "uncertainty"]], style_data=table_layout,style_header={'backgroundColor': 'gray', "color": "black",'fontWeight': 'bold'})
+            #uncertainty_table = dash_table.DataTable(uncertainty, ["Non-Demented", "Very-Mild-Demented", "Mild-Demented", "Moderate-Demented"], style_data=table_layout,style_header={'backgroundColor': 'gray', "color": "black",'fontWeight': 'bold'})
         else:
-            img_non_contours, img_with_contours, img_out_of_labeled, index, labels, _, _ = slice_img(stage, val)
+            img_non_contours, img_with_contours, img_out_of_labeled, index, labels, _, _, _ = slice_img(stage, val)
             img = img_non_contours
             fig = make_subplots(rows=1, cols=2, shared_yaxes=True)
             opacity=1
@@ -415,7 +421,7 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
         #SAVED_Z = max_z
         #MAX_SLIDER_VALUE = max_z
 
-        return figure, graph_fig, show_stage, show_img, percentage_table, prediction
+        return figure, graph_fig, show_stage, show_img, percentage_table, prediction, uncertainty_table
 
     # modify graph markers
     if click_data is not None and "points" in click_data:
@@ -464,7 +470,7 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
     cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
     figure["data"][0]["colorscale"] = cs
 
-    return figure, graph_fig, show_stage, show_img, percentage_table, prediction
+    return figure, graph_fig, show_stage, show_img, percentage_table, prediction, uncertainty_table
 
 
 @app.callback(Output("click-data", "children"), [Input("brain-graph", "clickData")])

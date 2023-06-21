@@ -75,7 +75,7 @@ def getHeatmap(selected_stage):
     preds = model.forward(inp_data.to(torch.float))
     pred = classes[preds[0].argmax(dim=-1).item()]
 
-    return image_heatmap, pred
+    return image_heatmap, pred, preds[0].detach().cpu().numpy()*100
 
 
 def get_contours(image, index=None):
@@ -166,6 +166,7 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     heatmap = None
     heatmap_out = None
     pred = None
+    uncertainty = None
 
     #load image to compare to mrt
     if selected_stage == "Non Demented":
@@ -260,7 +261,7 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     img_non_contours = reverseCenterImage(img_non_contours, slice_values_list[index], regions_data[:, index, :].T.shape)
     #print(img_non_contours.shape)
     if want_heatmap:
-        heatmap, pred = getHeatmap(selected_stage=selected_stage)
+        heatmap, pred, uncertainty = getHeatmap(selected_stage=selected_stage)
         heatmap = cv2.resize(heatmap, [image.shape[0], image.shape[1]])
         heatmap = heatmap[size_con[0]:size_con[1], size_con[2]:size_con[3]]
         heatmap = cv2.resize(heatmap, [on_contours[index].shape[1], on_contours[index].shape[0]])
@@ -311,4 +312,4 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     #print(img_all_contours.shape)
     #print(colored_img.shape)
 
-    return img_non_contours, img_all_contours, colored_img, index, names, heatmap_out, pred
+    return img_non_contours, img_all_contours, colored_img, index, names, heatmap_out, pred, uncertainty
