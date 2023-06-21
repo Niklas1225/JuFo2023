@@ -238,7 +238,7 @@ def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6
             img_names = np.array(img_names)
 
             mesh_obj = plotly_triangular_mesh(
-                vertices, faces, intensities, colorscale="inferno", names=img_names, opacity=opacity
+                vertices, faces, intensities, colorscale="viridis", names=img_names, opacity=opacity
             )
             mesh.extend(mesh_obj)
             mesh[1]["name"] = "img"

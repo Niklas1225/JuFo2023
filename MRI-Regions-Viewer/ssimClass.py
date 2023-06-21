@@ -30,6 +30,8 @@ def get_cam(model, x, target_layers):
     return grayscale_cam
 
 def getHeatmap(selected_stage):
+    classes = ("Non Demented", "Very Mild Demented", "Mild Demented", "Moderate Demented")
+
     transform_normal = transforms.Compose([transforms.Resize(224),
                                     transforms.CenterCrop(224),
                                     transforms.ToTensor(),
@@ -70,7 +72,10 @@ def getHeatmap(selected_stage):
     cm = plt.get_cmap("jet")
     image_heatmap = cm(image_heatmap)
 
-    return image_heatmap
+    preds = model.forward(inp_data.to(torch.float))
+    pred = classes[preds[0].argmax(dim=-1).item()]
+
+    return image_heatmap, pred
 
 
 def get_contours(image, index=None):
@@ -160,6 +165,7 @@ def reverseCenterImage(img, values_list, original_shape):
 def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     heatmap = None
     heatmap_out = None
+    pred = None
 
     #load image to compare to mrt
     if selected_stage == "Non Demented":
@@ -175,10 +181,10 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     img_contours, img_all_contours = get_contours(image.copy())
     #center image contours
     img_contours, img_all_contours, size_con = centerImage(img_contours, 254, 254, 254, 254, img_all_contours)
-    print()
-    print(image.shape)
+    #print()
+    #print(image.shape)
     img_non_contours = image.copy()[size_con[0]:size_con[1], size_con[2]:size_con[3]]
-    print(img_non_contours.shape)
+    #print(img_non_contours.shape)
     #img_all_contours = centerImage(img_all_contours, 254, 254, 2)
 
     #load mrt
@@ -246,15 +252,15 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     img_contours = cv2.resize(img_contours, [just_contours[index].shape[1], just_contours[index].shape[0]])
     img_all_contours = cv2.resize(img_all_contours, [on_contours[index].shape[1], on_contours[index].shape[0]])
     img_non_contours = cv2.resize(img_non_contours, [on_contours[index].shape[1], on_contours[index].shape[0]])
-    print(img_non_contours.shape)
+    #print(img_non_contours.shape)
     #img_all_contours = cv2.resize(img_all_contours, [regions_data.shape[0], regions_data.shape[2]])
 
     #colored_img = reverseCenterImage(on_contours[index], slice_values_list[index], regions_data[:, index, :].T.shape)[:, :, 0]
     img_all_contours = reverseCenterImage(img_all_contours, slice_values_list[index], regions_data[:, index, :].T.shape)
     img_non_contours = reverseCenterImage(img_non_contours, slice_values_list[index], regions_data[:, index, :].T.shape)
-    print(img_non_contours.shape)
+    #print(img_non_contours.shape)
     if want_heatmap:
-        heatmap = getHeatmap(selected_stage=selected_stage)
+        heatmap, pred = getHeatmap(selected_stage=selected_stage)
         heatmap = cv2.resize(heatmap, [image.shape[0], image.shape[1]])
         heatmap = heatmap[size_con[0]:size_con[1], size_con[2]:size_con[3]]
         heatmap = cv2.resize(heatmap, [on_contours[index].shape[1], on_contours[index].shape[0]])
@@ -305,4 +311,4 @@ def slice_img(selected_stage, selected_atlas, want_heatmap=False):
     #print(img_all_contours.shape)
     #print(colored_img.shape)
 
-    return img_non_contours, img_all_contours, colored_img, index, names, heatmap_out
+    return img_non_contours, img_all_contours, colored_img, index, names, heatmap_out, pred
