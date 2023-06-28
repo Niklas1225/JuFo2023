@@ -347,7 +347,6 @@ def brain_graph_handler(val, colorscale, z_axis, n_clicks1, n_clicks2, n_clicks3
             prediction = html.Span("Predicted class: " + prediction)
             uncertainty = [{"class": "Non-Demented", "uncertainty": uncertainty[0]}, {"class": "Very-Mild-Demented", "uncertainty": uncertainty[1]}, {"class": "Mild-Demented", "uncertainty": uncertainty[2]}, {"class": "Moderate-Demented", "uncertainty": uncertainty[3]}]
             uncertainty_table = dash_table.DataTable(uncertainty, [{"name": i, "id": i} for i in ["class", "uncertainty"]], style_data=table_layout,style_header={'backgroundColor': 'gray', "color": "black",'fontWeight': 'bold'})
-            #uncertainty_table = dash_table.DataTable(uncertainty, ["Non-Demented", "Very-Mild-Demented", "Mild-Demented", "Moderate-Demented"], style_data=table_layout,style_header={'backgroundColor': 'gray', "color": "black",'fontWeight': 'bold'})
         else:
             img_non_contours, img_with_contours, img_out_of_labeled, index, labels, _, _, _ = slice_img(stage, val)
             img = img_non_contours

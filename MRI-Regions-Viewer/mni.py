@@ -325,25 +325,25 @@ def create_mesh_data(option, z, img=None, img_labeled=None, cs=None, opacity=0.6
             data = data[:, :, :z]
             data = np.concatenate((data, np.zeros([data.shape[0], data.shape[1], rest])), axis=2)
 
+
+        list_intensities = []
         for i in np.unique(data):
             this_region = data.copy()
             this_region[this_region != i] = 0
+
+            #create labels
+            with open(DATA_PATH.joinpath('aal.nii.txt')) as f:
+                lines = f.readlines()
+
+            value_list = [""]
+            for count, line in enumerate(lines):
+                value_list.append(line.split()[1])
             
             if np.sum(this_region) != 0:
                 vertices, faces, normals, intensities = measure.marching_cubes(this_region, 0,  method='lorensen', allow_degenerate=False)
-                #create labels
-                with open(DATA_PATH.joinpath('aal.nii.txt')) as f:
-                    lines = f.readlines()
-
-                value_list = [""]
-                for count, line in enumerate(lines):
-                    value_list.append(line.split()[1])
                 
-                names = []
-                for i in intensities:
-                    names.append(value_list[int(i)])
-                names = np.array(names)
-
+                names = [value_list[int(intensities[0])]]*len(intensities)
+                list_intensities.append(intensities)
                 one_mesh = plotly_triangular_mesh(
                     vertices, faces, intensities, colorscale=default_colorscale, names=names, opacity=0.5
                 )
