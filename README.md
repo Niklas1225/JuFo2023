@@ -28,7 +28,7 @@ Report zu der Hyperparameter Optimierung des CNN-Transformer
 
 <h4>Normal Clustering</h4>
 
-![NormalClustering](/Genexpressions-Beziehungen/assets/NormalClustering.png)
+![NormalClustering](/Genexpressions-Beziehungen/assets/NormalClustering.png =250x)
 <h4>Upgraded AutoClass Clustering</h4>
 
 ![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_comparision.png)
