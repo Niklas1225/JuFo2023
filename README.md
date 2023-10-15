@@ -19,25 +19,6 @@ Report zu der Hyperparameter Optimierung des CNN-Transformer
 <br>
 
 <br>
-<h3>Upgraded AutoClass</h3>
-<hr>
-
-<span><em>
-</em></span>
-
-
-<h4>Normal Clustering</h4>
-
-![NormalClustering](/Genexpressions-Beziehungen/assets/NormalClustering.png)
-<h4>Upgraded AutoClass Clustering</h4>
-
-![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_comparision.png)
-<h4>Upgraded Disease Clustering</h4>
-
-![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_DC_comparision.png)
-<br>
-
-<br>
 <h3>Verwenden der App</h3>
 <hr>
 <br>
@@ -74,3 +55,22 @@ python app.py
 <h4>View MRI-Slices by changing the axial coordinate</h4>
 
 ![MRT-Regions](/MRI-Regions-Viewer/assets/ScreenshotHumanMRT.png)
+
+<br>
+<h3>Upgraded AutoClass</h3>
+<hr>
+
+<span><em>
+</em></span>
+
+
+<h4>Normal Clustering</h4>
+
+![NormalClustering](/Genexpressions-Beziehungen/assets/NormalClustering.png)
+<h4>Upgraded AutoClass Clustering</h4>
+
+![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_comparision.png)
+<h4>Upgraded Disease Clustering</h4>
+
+![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_DC_comparision.png)
+<br>
