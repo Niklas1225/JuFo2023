@@ -66,6 +66,13 @@ python app.py
 
 <h4>Normal Clustering</h4>
 
+|        scRNA-seq        | normal | ReLU      | Softplus |
+| -------------- | ------ | --------- | -------- |
+| Non-Zero-Count |    5.575.264    | 8.133.753 |     36.027.458     |
+| Minimum        |     0.11   | 2e-07     |     1e-45     |
+| Maximum               |   24.64     |      2.74     |     2.58     |
+
+
 ![NormalClustering](/Genexpressions-Beziehungen/assets/NormalClustering.png)
 <h4>Upgraded AutoClass Clustering</h4>
 
