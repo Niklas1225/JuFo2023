@@ -73,4 +73,8 @@ python app.py
 <h4>Upgraded Disease Clustering</h4>
 
 ![UpgradedAutoClassClustering](/Genexpressions-Beziehungen/assets/AutoClass_DC_comparision.png)
+<h4>Distribution differences with activation functions</h4>
+
+![DistributionDifferences](/Genexpressions-Beziehungen/assets/Distributions_with_activations.png)
+<br>
 <br>
