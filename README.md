@@ -80,7 +80,7 @@ python app.py
 | -------------- | ------ | --------- | ---- | ---- | 
 | Non-Zero-Count |    5.575.264    | 8.133.753 | - |     36.027.458     |
 | Minimum        |     0.11   | 2e-07   | - |     1e-45     |
-| Maximum               |   24.64   | - |      2.74     |     2.58     |
+| Maximum               |   24.64   |      2.74 | -   |     2.58     |
 
 
 ![DistributionDifferences](/Genexpressions-Beziehungen/assets/Distributions_with_activations.png)
