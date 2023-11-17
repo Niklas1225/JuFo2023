@@ -76,11 +76,11 @@ python app.py
 <h4>Distribution differences with activation functions</h4>
 
 
-|        scRNA-seq        | normal | ReLU 30| ReLU  10  | Softplus |
-| -------------- | ------ | --------- | ---- | ---- | 
-| Non-Zero-Count |    5.575.264    | 8.133.753 | 1.577.998 |     36.027.458     |
-| Minimum        |     0.11   | 2e-07   | 0.0003 |     1e-45     |
-| Maximum               |   24.64   |      2.74 | 3.14   |     2.58     |
+|        scRNA-seq        | normal | ReLU 30| ReLU  10  | ReLU 100 |  Softplus |
+| -------------- | ------ | --------- | ---- | ---- | ----- |
+| Non-Zero-Count |    5.575.264    | 8.133.753 | 1.577.998 |  7.585.000 |  36.027.458     |
+| Minimum        |     0.11   | 2e-07   | 0.0003 |   0.006   |  1e-45     |
+| Maximum               |   24.64   |      2.74 | 3.14 |   2.78   |     2.58     |
 
 
 ![DistributionDifferences](/Genexpressions-Beziehungen/assets/Distributions_with_activations.png)
