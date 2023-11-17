@@ -78,9 +78,9 @@ python app.py
 
 |        scRNA-seq        | normal | ReLU 30| ReLU  10  | Softplus |
 | -------------- | ------ | --------- | ---- | ---- | 
-| Non-Zero-Count |    5.575.264    | 8.133.753 | - |     36.027.458     |
-| Minimum        |     0.11   | 2e-07   | - |     1e-45     |
-| Maximum               |   24.64   |      2.74 | -   |     2.58     |
+| Non-Zero-Count |    5.575.264    | 8.133.753 | 1.577.998 |     36.027.458     |
+| Minimum        |     0.11   | 2e-07   | 0.0003 |     1e-45     |
+| Maximum               |   24.64   |      2.74 | 3.14   |     2.58     |
 
 
 ![DistributionDifferences](/Genexpressions-Beziehungen/assets/Distributions_with_activations.png)
