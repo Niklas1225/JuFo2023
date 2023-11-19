@@ -3,18 +3,18 @@
 <h3>Kurzfassung</h3>
 <hr>
 
-__German__
+__German__ <br>
 <span><em>
 Alzheimer ist eine zunehmend auftretende neurodegenerative Erkrankung. In ihrem Verlauf nimmt die Fähigkeit des Gehirns Informationen zu speichern ab, die Sprachfähigkeit leidet. Durch eine frühe Erkennung kann das Fortschreiten der Erkrankung entscheidend verlangsamt werden, sodass für Betroffene und Angehörige eine bessere Situation geschaffen wird.<br>
 In meinem Projekt möchte ich mittels KI-basierter Ansätze die Diagnostik von Alzheimer in allen Stadien der Erkrankung verbessern. Hierzu verwendete ich MRT-Aufnahmen der Gehirne verschiedener Personen, mithilfe derer ich unterschiedliche Modelle trainierte und vergleichen konnte. Als KI-Architekturen wird ein CNN-Transformer verwendet, der mit unterschiedlich großen ResNets und EfficientNets verglichen wird. Der CNN-Transformer performt bei der Klassifizierung am besten, da er auf Lokalität und Globalität spezialisiert ist. <br>
 Durch Methoden der Erklärbarkeit kann zudem die Entscheidung des Modells interpretiert und nachvollzogen werden. </em></span>
 
-__English__
-**Alzheimer's is an increasingly common neurodegenerative disease. In its course, the brain's ability to store information decreases and the ability to speak suffers. Early detection can decisively slow down the progression of the disease, creating a better situation for those affected and their relatives.
+__English__ <br>
+<span><em>
+Alzheimer's is an increasingly common neurodegenerative disease. In its course, the brain's ability to store information decreases and the ability to speak suffers. Early detection can decisively slow down the progression of the disease, creating a better situation for those affected and their relatives.<br>
 Here in this project, I want to use AI-based approaches to improve the diagnosis of Alzheimer's in all stages of the disease. To do this, I used MRI images of the brains of different people, with the help of which I was able to train and compare different models. The AI architectures used are a CNN-Transformer, which is compared with ResNets and EfficientNets of different sizes. The CNN transformer performs best in the classification because it is specialised in locality and globality. In addition, the decision of the model can be interpreted and understood through methods of Explainability. 
-The model and the Explainability methods are combined in an app to help doctors diagnose Alzheimer's patients.
-I am also trying to find out more about the gene mechanisms in Alzheimer's disease by clustering cells and genes using Autoencoders and Graph Neural Networks to show the difference in cells from healthy patients to cells from patients with Alzheimer's disease.
-**
+The model and the Explainability methods are combined in an app to help doctors diagnose Alzheimer's patients. <br>
+I am also trying to find out more about the gene mechanisms in Alzheimer's disease by clustering cells and genes using Autoencoders and Graph Neural Networks to show the difference in cells from healthy patients to cells from patients with Alzheimer's disease.</em></span>
 
 <br>
 <h3>Links to the Reports:</h3>
